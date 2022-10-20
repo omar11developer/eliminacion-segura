@@ -4,8 +4,10 @@ class ClassState extends React.Component {
     super(props);
     this.state = {
       error: false,
+      loading: false,
     };
   }
+  
   render() {
     const { name } = this.props;
     return (
@@ -16,9 +18,10 @@ class ClassState extends React.Component {
           eliminar.
         </p>
         {this.state.error && <p>Error: El codigo es incorrecto </p>}
+        {this.state.loading && <p>Loading... </p>}
         <input placeholder="Codigo de seguridad" />
         <button
-        onClick={() => this.setState({error: !this.state.error})}
+        onClick={() => this.setState({loading: true})}
         >Comprobar</button>
       </div>
     );
