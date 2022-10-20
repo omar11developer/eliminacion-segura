@@ -3,23 +3,28 @@ import React, { useState, useEffect } from "react";
 const SECURITY_CODE = 'admin123'
 
 export const UseState = ({ name }) => {
-  const [loading, setLoading] = useState(false)
-    const [value, setValue] = useState('')
-    const [error, setError] = useState(false)
+    const [state, setState] = useState({
+      value: '',
+      error: false,
+      loading: false,
+    });
+
     useEffect(() => {
 
-      if(loading) {
+      if(state.loading) {
         setTimeout(() =>{
-          if(value === SECURITY_CODE){
-            setLoading(false)
+          if(state.value === SECURITY_CODE){
+            setState({
+              ...state,              
+              loading:false})
+           
           }else {
-            setError(true)
-            setLoading(false)
+            setState({...state, loading:false, error:true})
           }
         }, 3000)
       }
 
-    },[loading])
+    },[state.loading])
 
   return (
     <div>
@@ -28,28 +33,34 @@ export const UseState = ({ name }) => {
         Por favor, escriba el codigo de seguridad para comprobar que quiere
         eliminar.
       </p>
-      {(error && !loading) && (
+      {(state.error && !state.loading) && (
         <p>Error: El codigo es incorrecto </p>
       )}
-      { loading && (
+      { state.loading && (
         <p>Cargando...</p>
       )
 
       }
+      <form>
+
       <input placeholder="Codigo de seguridad"
-        value={value}
+        value={state.value}
         onChange={(event) => {
           //setError(false);
-          setValue(event.target.value)
+          setState({
+            ...state,
+            value: event.target.value
+          })
         }}
-      />
+        />
       <button
-      onClick={() => {
-        setLoading(true) 
-        setError(false)//este es correcto
+      onClick={(e) => {
+        e.preventDefault()
+        setState({...state, loading:true, error:false})
       }}
       >
         Comprobar</button>
+        </form>
     </div>
   );
 };
